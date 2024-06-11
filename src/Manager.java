@@ -12,7 +12,6 @@ public class Manager {
     HashMap<Integer, ArrayList<Integer>> idDataHashMap = new HashMap<>();
 
 
-
     void putTask(Task task) {                                       // создание простой задачи
         task.setTaskId(newId);
         newId++;
@@ -24,7 +23,7 @@ public class Manager {
         tasksHashMap.remove(id);
     }
 
-    void putSubTask(int id, Subtask subtask) {                      // создание поздадачи
+    void putSubTask(int id, Subtask subtask) {                      // создание подзадачи
         if (!idDataHashMap.containsKey(id)) {
             ArrayList<Integer> subTasksIds = new ArrayList<>();
             changeTaskToEpic(id);
@@ -82,6 +81,8 @@ public class Manager {
             tasksHashMap.remove(id);
         } else if (epicTasksHashMap.containsKey(id)) {
             epicTasksHashMap.remove(id);
+            removeSubTasks(id);                        ///
+        } else if (subTasksHashMap.containsKey(id)) {
             subTasksHashMap.remove(id);
         } else {
             System.out.println("Такого id нет");
@@ -93,6 +94,16 @@ public class Manager {
         tasksHashMap.clear();
         epicTasksHashMap.clear();
         subTasksHashMap.clear();
+    }
+
+    protected void removeSubTasks(int id) {                               // удалить все субтаски определенного эпика
+        ArrayList<Integer> arrayWithId = idDataHashMap.get(id);
+        for (int i = 0; i < arrayWithId.size(); i++) {
+            //arrayWithId.get(i);                                                           // получили ID
+            if (subTasksHashMap.containsKey(arrayWithId.get(i))) {
+                subTasksHashMap.remove(arrayWithId.get(i));
+            }
+        }
     }
 
     void updateTask(int id, Task task) {                        // изменить название и описание задачи или эпика
@@ -144,8 +155,7 @@ public class Manager {
                 int bufer = arrayWithId.get(i);
                 if (showTask(bufer).getTaskStatus().equals(Status.IN_PROGRESS)) {
                     showTask(id).setTaskStatus(Status.IN_PROGRESS);
-                }
-                else if (showTask(bufer).getTaskStatus().equals(Status.DONE)) {
+                } else if (showTask(bufer).getTaskStatus().equals(Status.DONE)) {
                     showTask(id).setTaskStatus(Status.IN_PROGRESS);
                     doneTrigger++;
                 }
