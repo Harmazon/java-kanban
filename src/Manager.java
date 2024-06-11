@@ -10,7 +10,7 @@ public class Manager {
     // ID подзадач хранятся в ArrayList, которые связаны со своими эпиками одинаковыми ключами.
     // т.е. ID ArrayList'a == ID эпика.
     HashMap<Integer, ArrayList<Integer>> idDataHashMap = new HashMap<>();
-    // коллекция из ID подзадач
+
 
 
     void putTask(Task task) {                                       // создание простой задачи
@@ -93,7 +93,6 @@ public class Manager {
         tasksHashMap.clear();
         epicTasksHashMap.clear();
         subTasksHashMap.clear();
-        //subTasksIds.clear();
     }
 
     void updateTask(int id, Task task) {                        // изменить название и описание задачи или эпика
