@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+package model;
 
 public class EpicTask extends Task {
     public EpicTask(String taskTitle, String taskDescription) {
