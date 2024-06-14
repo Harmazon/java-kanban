@@ -7,7 +7,6 @@ import model.Task;
 
 import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class Manager {
     private int newId = 1;
@@ -45,7 +44,6 @@ public class Manager {
         } else {
             ArrayList<Integer> subTasksIds = idDataHashMap.get(id);
             createSubTask(subtask);
-
             subTasksIds.add(subtask.getTaskId());
             idDataHashMap.put(id, subTasksIds);
         }
@@ -182,10 +180,10 @@ public class Manager {
     }
 
     protected void checkAndChangeEpicStatusAfterDelSubTask(int keyOfIdDeposit, int idSubtask) {
-        ArrayList<Integer> IdsArrayList = new ArrayList<>(idDataHashMap.get(keyOfIdDeposit));
+        ArrayList<Integer> idsArrayList = new ArrayList<>(idDataHashMap.get(keyOfIdDeposit));
         ArrayList<Integer> arrayListForCopy = new ArrayList<>();
         idDataHashMap.remove(keyOfIdDeposit);
-        for (Integer ids : IdsArrayList) {
+        for (Integer ids : idsArrayList) {
             if (!(ids == idSubtask)) {
                 arrayListForCopy.add(ids);
             }
@@ -194,5 +192,7 @@ public class Manager {
         if (idDataHashMap.get(keyOfIdDeposit).isEmpty()) {
             getTask(keyOfIdDeposit).setTaskStatus(Status.NEW);
         }
+        idsArrayList.clear();
+        arrayListForCopy.clear();
     }
 }

@@ -86,14 +86,22 @@ public class Main {
         System.out.println(task1 + "\n\n");
 
         EpicTask epic = new EpicTask("Эпик", "Описание");
+        EpicTask epic2 = new EpicTask("Эпик2", "Описание2");
         Subtask subtask1 = new Subtask("Подзадача1", "Описание");
         Subtask subtask2 = new Subtask("Подзадача2", "Описание");
         Subtask subtask3 = new Subtask("Подзадача3", "Описание");
+        Subtask subtask4 = new Subtask("Подзадача4", "Описание");
+        Subtask subtask5 = new Subtask("Подзадача5", "Описание");
 
         manager.createEpic(epic);
         manager.putSubTaskInEpic(epic.getTaskId(), subtask1);
         manager.putSubTaskInEpic(epic.getTaskId(), subtask2);
         manager.putSubTaskInEpic(epic.getTaskId(), subtask3);
+
+        manager.createEpic(epic2);
+        manager.putSubTaskInEpic(epic2.getTaskId(), subtask4);
+        manager.putSubTaskInEpic(epic2.getTaskId(), subtask5);
+
         manager.printAllTasks();
 
         subtask1.setTaskTitle("Новая подзадача1");
@@ -114,7 +122,7 @@ public class Main {
         //System.out.println("\n***ТЕСТ СТАТУСА на NEW");               // раскомментировать для проверки
         //manager.removeTask(3);
         //manager.removeTask(4);
-        //manager.removeTask(5);
+        // manager.removeTask(5);
         //manager.printAllTasks();
 
         System.out.println("\nСубтаски эпика:");
