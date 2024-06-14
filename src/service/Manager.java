@@ -41,11 +41,15 @@ public class Manager {
             createSubTask(subtask);
             subTasksIds.add(subtask.getTaskId());
             idDataHashMap.put(id, subTasksIds);
+            subtask.epicId = id;                        // добавление id эпика, к которому будет принадлежать подзадача
+            epicTasksHashMap.get(id).subTasksOfEpic.add(subtask.getTaskId());   // *добавление id в ArrayList в классе Epic
         } else {
             ArrayList<Integer> subTasksIds = idDataHashMap.get(id);
             createSubTask(subtask);
             subTasksIds.add(subtask.getTaskId());
             idDataHashMap.put(id, subTasksIds);
+            subtask.epicId = id;                        // добавление id эпика, к которому будет принадлежать подзадача
+            epicTasksHashMap.get(id).subTasksOfEpic.add(subtask.getTaskId());   // *добавление id в ArrayList в классе Epic
         }
     }
 

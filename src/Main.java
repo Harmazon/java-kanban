@@ -122,7 +122,7 @@ public class Main {
         //System.out.println("\n***ТЕСТ СТАТУСА на NEW");               // раскомментировать для проверки
         //manager.removeTask(3);
         //manager.removeTask(4);
-        // manager.removeTask(5);
+        //manager.removeTask(5);
         //manager.printAllTasks();
 
         System.out.println("\nСубтаски эпика:");
