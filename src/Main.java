@@ -54,16 +54,7 @@ public class Main {
                     String subTask = in.next();
                     System.out.println("Введи описание подзадачи");
                     String subTaskDesc = in.next();
-                    manager.createSubTask(idEpic, new Subtask(subTask, subTaskDesc));
-                    break;
-                case 8:
-                    System.out.println("Введи ID");
-                    int idTestEpic = in.nextInt();
-                    manager.changeAndCheckEpicStatus(idTestEpic);
-                    System.out.println("Эпик");
-                    System.out.println(manager.getTask(idTestEpic));
-                    System.out.println("Подзадачи");
-                    manager.printSubTasksOfEpic(idTestEpic);
+                    manager.putSubTaskInEpic(idEpic, new Subtask(subTask, subTaskDesc));
                     break;
                 case 0:
                     return;
@@ -80,7 +71,6 @@ public class Main {
         System.out.println("5 - удалить все задачи");
         System.out.println("6 - создать эпик");
         System.out.println("7 - создать подзадачу и добавить к основной задаче");
-        System.out.println("8 - показать эпик, его подзадачи и статус");
         System.out.println("0 - выход");
     }
 
@@ -101,10 +91,35 @@ public class Main {
         Subtask subtask3 = new Subtask("Подзадача3", "Описание");
 
         manager.createEpic(epic);
-        manager.createSubTask(epic.getTaskId(), subtask1);
-        manager.createSubTask(epic.getTaskId(), subtask2);
-        manager.createSubTask(epic.getTaskId(), subtask3);
+        manager.putSubTaskInEpic(epic.getTaskId(), subtask1);
+        manager.putSubTaskInEpic(epic.getTaskId(), subtask2);
+        manager.putSubTaskInEpic(epic.getTaskId(), subtask3);
         manager.printAllTasks();
+
+        subtask1.setTaskTitle("Новая подзадача1");
+        subtask1.setTaskDescription("Новое описание1");
+        subtask1.setTaskStatus(Status.DONE);
+        manager.updateSubTask(subtask1);
+        subtask2.setTaskTitle("Новая подзадача1");
+        subtask2.setTaskDescription("Новое описание1");
+        subtask2.setTaskStatus(Status.DONE);
+        manager.updateSubTask(subtask2);
+        subtask3.setTaskTitle("Новая подзадача1");
+        subtask3.setTaskDescription("Новое описание1");
+        subtask3.setTaskStatus(Status.DONE);
+        manager.updateSubTask(subtask3);
+        System.out.println("\n***ТЕСТ СТАТУСА");
+        manager.printAllTasks();
+
+        //System.out.println("\n***ТЕСТ СТАТУСА на NEW");               // раскомментировать для проверки
+        //manager.removeTask(3);
+        //manager.removeTask(4);
+        //manager.removeTask(5);
+        //manager.printAllTasks();
+
+        System.out.println("\nСубтаски эпика:");
+        System.out.println(manager.getSubTasksOfEpic(2));
+
         manager.removeTask(4);
         System.out.println("\nУдалил одну из подзадач");
         manager.printAllTasks();
