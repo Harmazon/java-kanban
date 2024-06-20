@@ -2,137 +2,77 @@ import model.EpicTask;
 import model.Status;
 import model.Subtask;
 import model.Task;
-import service.Manager;
-
-import java.util.Scanner;
+import service.*;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-        Manager manager = new Manager();
-
-        testTask();
-
-        while (true) {
-            showMenu();
-            int command = in.nextInt();
-            switch (command) {
-                case 1:
-                    System.out.println("Введи задачу");
-                    String taskTitle = in.next();
-                    System.out.println("Введи описание");
-                    String taskDescription = in.next();
-                    manager.createTask(new Task(taskTitle, taskDescription));
-                    break;
-                case 2:
-                    System.out.println("Введи ID");
-                    int setId = in.nextInt();
-                    System.out.println(manager.getTask(setId));
-                    break;
-                case 3:
-                    manager.printAllTasks();
-                    break;
-                case 4:
-                    System.out.println("Введи ID");
-                    int setIdRem = in.nextInt();
-                    manager.removeTask(setIdRem);
-                    break;
-                case 5:
-                    manager.removeAllTasks();
-                    break;
-                case 6:
-                    System.out.println("Введи эпик");
-                    String epicTitle = in.next();
-                    System.out.println("Введи описание");
-                    String epicDescription = in.next();
-                    manager.createEpic(new EpicTask(epicTitle, epicDescription));
-                    break;
-                case 7:
-                    System.out.println("Введи id эпика, к которому нужно добавить подзадачу");
-                    int idEpic = in.nextInt();
-                    System.out.println("Введи подзадачу");
-                    String subTask = in.next();
-                    System.out.println("Введи описание подзадачи");
-                    String subTaskDesc = in.next();
-                    manager.putSubTaskInEpic(idEpic, new Subtask(subTask, subTaskDesc));
-                    break;
-                case 0:
-                    return;
-            }
-        }
+        testProject();
     }
 
-    static void showMenu() {
-        System.out.println("\nМеню проверки функционала программы, стр. 1");
-        System.out.println("1 - создать задачу");
-        System.out.println("2 - показать задачу по ID");
-        System.out.println("3 - показать все текущие задачи");
-        System.out.println("4 - удалить задачу по ID");
-        System.out.println("5 - удалить все задачи");
-        System.out.println("6 - создать эпик");
-        System.out.println("7 - создать подзадачу и добавить к основной задаче");
-        System.out.println("0 - выход");
-    }
+    static void testProject() {
+        TaskManager manager = Managers.getDefault();
+        InMemoryTaskManager inMemoryTaskManager = (InMemoryTaskManager) manager;
 
-    static void testTask() {
-        Manager manager = new Manager();
-        Task task1 = new Task("Задача", "Описание");
-        manager.createTask(task1);
-        System.out.println(task1);
-        task1.setTaskTitle("Новая задача");
-        task1.setTaskDescription("Новое описание");
-        task1.setTaskStatus(Status.DONE);
-        manager.updateTask(task1);
-        System.out.println(task1 + "\n\n");
+        HistoryManager historyManager = Managers.getDefaultHistory();
+        InMemoryHistoryManager inMemoryHistoryManager = (InMemoryHistoryManager) historyManager;
 
+        Task task = new Task("Задача", "Описание");
         EpicTask epic = new EpicTask("Эпик", "Описание");
-        EpicTask epic2 = new EpicTask("Эпик2", "Описание2");
-        Subtask subtask1 = new Subtask("Подзадача1", "Описание");
-        Subtask subtask2 = new Subtask("Подзадача2", "Описание");
-        Subtask subtask3 = new Subtask("Подзадача3", "Описание");
-        Subtask subtask4 = new Subtask("Подзадача4", "Описание");
-        Subtask subtask5 = new Subtask("Подзадача5", "Описание");
+        EpicTask epic2 = new EpicTask("Эпик2", "Описание");
+        Subtask subtask1 = new Subtask("Подзадача1", "Описание", 2);
+        Subtask subtask2 = new Subtask("Подзадача2", "Описание", 2);
+        Subtask subtask3 = new Subtask("Подзадача3", "Описание", 2);
+        Subtask subtask4 = new Subtask("Подзадача4", "Описание", 2);
+        Subtask subtask5 = new Subtask("Подзадача5", "Описание", 3);
+        Subtask subtask6 = new Subtask("Подзадача6", "Описание", 3);
 
-        manager.createEpic(epic);
-        manager.putSubTaskInEpic(epic.getTaskId(), subtask1);
-        manager.putSubTaskInEpic(epic.getTaskId(), subtask2);
-        manager.putSubTaskInEpic(epic.getTaskId(), subtask3);
+        inMemoryTaskManager.createTask(task);
+        inMemoryTaskManager.createEpic(epic);
+        inMemoryTaskManager.createEpic(epic2);
+        inMemoryTaskManager.createSubTask(subtask1);
+        inMemoryTaskManager.createSubTask(subtask2);
+        inMemoryTaskManager.createSubTask(subtask4);
+        inMemoryTaskManager.createSubTask(subtask5);
+        inMemoryTaskManager.createSubTask(subtask6);
+        inMemoryTaskManager.createSubTask(subtask3);
+        inMemoryTaskManager.printAllTasks();
+        System.out.println("\nПодзадачи эпика 1:\n" + inMemoryTaskManager.getSubTasksOfEpic(2));
+        System.out.println("\nПодзадачи эпика 2:\n" + inMemoryTaskManager.getSubTasksOfEpic(3) + "\n\n");
+        inMemoryTaskManager.removeTask(6);
+        inMemoryTaskManager.printAllTasks();
+        System.out.println("\nПодзадачи эпика 1:\n" + inMemoryTaskManager.getSubTasksOfEpic(2));
 
-        manager.createEpic(epic2);
-        manager.putSubTaskInEpic(epic2.getTaskId(), subtask4);
-        manager.putSubTaskInEpic(epic2.getTaskId(), subtask5);
+        subtask5.setTaskTitle("Новая подзадача 5");
+        subtask5.setTaskDescription("Новое описание");
+        subtask5.setTaskStatus(Status.DONE);
+        inMemoryTaskManager.updateSubTask(subtask5);
+        subtask6.setTaskTitle("Новая подзадача 6");
+        subtask6.setTaskDescription("Новое описание");
+        subtask6.setTaskStatus(Status.DONE);
+        inMemoryTaskManager.updateSubTask(subtask6);
+        System.out.println("\nЭпик 2: \n" + inMemoryTaskManager.epicTasksHashMap.get(3));
+        System.out.println("\nПодзадачи эпика 2:\n" + inMemoryTaskManager.getSubTasksOfEpic(3) + "\n\n");
 
-        manager.printAllTasks();
+        /*inMemoryTaskManager.removeTask(7);
+        inMemoryTaskManager.removeTask(8);
+        inMemoryTaskManager.printAllTasks();
 
-        subtask1.setTaskTitle("Новая подзадача1");
-        subtask1.setTaskDescription("Новое описание1");
-        subtask1.setTaskStatus(Status.DONE);
-        manager.updateSubTask(subtask1);
-        subtask2.setTaskTitle("Новая подзадача1");
-        subtask2.setTaskDescription("Новое описание1");
-        subtask2.setTaskStatus(Status.DONE);
-        manager.updateSubTask(subtask2);
-        subtask3.setTaskTitle("Новая подзадача1");
-        subtask3.setTaskDescription("Новое описание1");
-        subtask3.setTaskStatus(Status.DONE);
-        manager.updateSubTask(subtask3);
-        System.out.println("\n***ТЕСТ СТАТУСА");
-        manager.printAllTasks();
+        inMemoryTaskManager.removeTask(2);
+        inMemoryTaskManager.printAllTasks();*/
 
-        //System.out.println("\n***ТЕСТ СТАТУСА на NEW");               // раскомментировать для проверки
-        //manager.removeTask(3);
-        //manager.removeTask(4);
-        //manager.removeTask(5);
-        //manager.printAllTasks();
-
-        System.out.println("\nСубтаски эпика:");
-        System.out.println(manager.getSubTasksOfEpic(2));
-
-        manager.removeTask(4);
-        System.out.println("\nУдалил одну из подзадач");
-        manager.printAllTasks();
-        manager.removeTask(2);
-        System.out.println("\nУдалил эпик");
-        manager.printAllTasks();
+        System.out.println("Проверка истории:");
+        inMemoryTaskManager.getTask(1);                     // не войдет в список
+        inMemoryTaskManager.getTask(2);
+        inMemoryTaskManager.getTask(2);
+        inMemoryTaskManager.getTask(3);
+        inMemoryTaskManager.getTask(4);
+        inMemoryTaskManager.getTask(5);
+        inMemoryTaskManager.getTask(2);
+        inMemoryTaskManager.getTask(2);
+        inMemoryTaskManager.getTask(2);
+        inMemoryTaskManager.getTask(5);
+        inMemoryTaskManager.getTask(5);
+        System.out.println("список вызывается из Main, приходит заполненный" + inMemoryTaskManager.historyArrList);
+        System.out.println(inMemoryHistoryManager.getHistory());
     }
 }

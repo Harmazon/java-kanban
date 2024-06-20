@@ -46,11 +46,11 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
-                "taskId=" + taskId +
-                ", taskTitle='" + taskTitle + '\'' +
-                ", taskDescription='" + taskDescription + '\'' +
-                ", taskStatus=" + taskStatus +
-                '}';
+        return "[Задача]\n" +
+                "ID задачи: " + getTaskId() +
+                ", Наименование задачи: " + getTaskTitle() + '\'' +
+                ", Описание задачи: " + getTaskDescription() + '\'' +
+                ", Статус задачи: " + getTaskStatus() +
+                '\n';
     }
 }
