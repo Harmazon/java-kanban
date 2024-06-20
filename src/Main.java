@@ -72,7 +72,6 @@ public class Main {
         inMemoryTaskManager.getTask(2);
         inMemoryTaskManager.getTask(5);
         inMemoryTaskManager.getTask(5);
-        System.out.println("список вызывается из Main, приходит заполненный" + inMemoryTaskManager.historyArrList);
         System.out.println(inMemoryHistoryManager.getHistory());
     }
 }
