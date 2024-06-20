@@ -5,16 +5,22 @@ import model.Task;
 import java.util.ArrayList;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    public ArrayList<Task> historyArrList = new ArrayList<>();
+    private final static int MAX_HISTORY_LIST = 10;
+    private final ArrayList<Task> historyArrList = new ArrayList<>();
+
 
     @Override
-    public ArrayList getHistory() {
+    public ArrayList<Task> getHistory() {
         return historyArrList;
     }
 
     @Override
-    public void add(Task task) {                    // должен помечать задачи как просмотренные
-
+    public void add(Task task) {
+        if (task != null) {
+            if (historyArrList.size() >= MAX_HISTORY_LIST) {
+                historyArrList.remove(0);
+            }
+            historyArrList.add(task);
+        }
     }
-
 }

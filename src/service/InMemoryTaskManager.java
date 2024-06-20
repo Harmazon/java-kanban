@@ -14,8 +14,7 @@ public class InMemoryTaskManager implements TaskManager {
     public HashMap<Integer, Task> tasksHashMap = new HashMap<>();
     public HashMap<Integer, EpicTask> epicTasksHashMap = new HashMap<>();
     public HashMap<Integer, Subtask> subTasksHashMap = new HashMap<>();
-    InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
-    public ArrayList<Task> historyArrList2 = new ArrayList<>();
+    InMemoryHistoryManager MHManager = new InMemoryHistoryManager();
 
 
     @Override
@@ -46,46 +45,20 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTask(int id) {                         // вывести в консоль задачу, эпик или подзадачу
-        final int MAX_HISTORY_LIST = 10;
         if (tasksHashMap.containsKey(id)) {
-            if (!(inMemoryHistoryManager.historyArrList.size() >= MAX_HISTORY_LIST)) {
-                inMemoryHistoryManager.historyArrList.add(tasksHashMap.get(id));
-            } else {
-                inMemoryHistoryManager.historyArrList.remove(0);
-                inMemoryHistoryManager.historyArrList.add(tasksHashMap.get(id));
-            }
+            MHManager.add(tasksHashMap.get(id));
             return tasksHashMap.get(id);                        // return задача
         } else if (epicTasksHashMap.containsKey(id)) {
-            if (!(inMemoryHistoryManager.historyArrList.size() >= MAX_HISTORY_LIST)) {
-                inMemoryHistoryManager.historyArrList.add(epicTasksHashMap.get(id));
-            } else {
-                inMemoryHistoryManager.historyArrList.remove(0);
-                inMemoryHistoryManager.historyArrList.add(epicTasksHashMap.get(id));
-            }
+            MHManager.add(epicTasksHashMap.get(id));
             return epicTasksHashMap.get(id);                    // return эпик
         } else if (subTasksHashMap.containsKey(id)) {
-            if (!(inMemoryHistoryManager.historyArrList.size() >= MAX_HISTORY_LIST)) {
-                inMemoryHistoryManager.historyArrList.add(subTasksHashMap.get(id));
-            } else {
-                inMemoryHistoryManager.historyArrList.remove(0);
-                inMemoryHistoryManager.historyArrList.add(subTasksHashMap.get(id));
-            }
+            MHManager.add(subTasksHashMap.get(id));
             return subTasksHashMap.get(id);                     // return подзадача
         } else {
             System.out.println("Такого id нет");
             return null;
         }
     }
-
-    /*private void setIdInHistoryArr(int id) {
-        //final int MAX_HISTORY_LIST = 10;
-        if (!(inMemoryHistoryManager.historyArrList.size() >= MAX_HISTORY_LIST)) {
-            inMemoryHistoryManager.historyArrList.add(id);
-        } else {
-            inMemoryHistoryManager.historyArrList.remove(0);
-            inMemoryHistoryManager.historyArrList.add(id);
-        }
-    } */
 
     @Override
     public void printAllTasks() {
