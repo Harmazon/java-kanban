@@ -125,7 +125,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void removeAllTasks() {                                      // удалить все задачи и эпики
+    public void removeAllTasks() {
         tasksHashMap.clear();
         epicTasksHashMap.clear();
         subTasksHashMap.clear();
