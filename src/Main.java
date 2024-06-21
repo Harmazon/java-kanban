@@ -13,9 +13,6 @@ public class Main {
         TaskManager manager = Managers.getDefault();
         InMemoryTaskManager inMemoryTaskManager = (InMemoryTaskManager) manager;
 
-        HistoryManager historyManager = Managers.getDefaultHistory();
-        InMemoryHistoryManager inMemoryHistoryManager = (InMemoryHistoryManager) historyManager;
-
         Task task = new Task("Задача", "Описание");
         EpicTask epic = new EpicTask("Эпик", "Описание");
         EpicTask epic2 = new EpicTask("Эпик2", "Описание");
@@ -61,7 +58,7 @@ public class Main {
         inMemoryTaskManager.printAllTasks();*/
 
         System.out.println("Проверка истории:");
-        inMemoryTaskManager.getTask(1);                     // не войдет в список
+        inMemoryTaskManager.getTask(1);                     // <--- не войдет в список
         inMemoryTaskManager.getTask(2);
         inMemoryTaskManager.getTask(2);
         inMemoryTaskManager.getTask(3);
@@ -72,7 +69,8 @@ public class Main {
         inMemoryTaskManager.getTask(2);
         inMemoryTaskManager.getTask(5);
         inMemoryTaskManager.getTask(5);
-        System.out.println(inMemoryHistoryManager.getHistory());
+
+        System.out.println(InMemoryHistoryManager.inMemoryHistoryManagerStatic.getHistory());
 
     }
 }

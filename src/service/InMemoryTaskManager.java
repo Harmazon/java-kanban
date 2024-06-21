@@ -14,8 +14,6 @@ public class InMemoryTaskManager implements TaskManager {
     public HashMap<Integer, Task> tasksHashMap = new HashMap<>();
     public HashMap<Integer, EpicTask> epicTasksHashMap = new HashMap<>();
     public HashMap<Integer, Subtask> subTasksHashMap = new HashMap<>();
-    InMemoryHistoryManager MHManager = new InMemoryHistoryManager();
-
 
     @Override
     public void createTask(Task task) {                                      // создание простой задачи
@@ -46,13 +44,13 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Task getTask(int id) {                         // вывести в консоль задачу, эпик или подзадачу
         if (tasksHashMap.containsKey(id)) {
-            MHManager.add(tasksHashMap.get(id));
+            InMemoryHistoryManager.inMemoryHistoryManagerStatic.add(tasksHashMap.get(id));
             return tasksHashMap.get(id);                        // return задача
         } else if (epicTasksHashMap.containsKey(id)) {
-            MHManager.add(epicTasksHashMap.get(id));
+            InMemoryHistoryManager.inMemoryHistoryManagerStatic.add(epicTasksHashMap.get(id));
             return epicTasksHashMap.get(id);                    // return эпик
         } else if (subTasksHashMap.containsKey(id)) {
-            MHManager.add(subTasksHashMap.get(id));
+            InMemoryHistoryManager.inMemoryHistoryManagerStatic.add(subTasksHashMap.get(id));
             return subTasksHashMap.get(id);                     // return подзадача
         } else {
             System.out.println("Такого id нет");
