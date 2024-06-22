@@ -2,10 +2,10 @@ package service;
 
 import model.Task;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface HistoryManager {
-    public void add(Task task);             // должен помечать задачи как просмотренные
+    void add(Task task);             // должен помечать задачи как просмотренные
 
-    public ArrayList getHistory();               // возвращает список задач
+    List getHistory();               // возвращает список задач
 }

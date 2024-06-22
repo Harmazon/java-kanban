@@ -3,10 +3,18 @@ package model;
 import java.util.ArrayList;
 
 public class EpicTask extends Task {
-    public ArrayList<Integer> subTasksOfEpic = new ArrayList<>();
+    private ArrayList<Integer> subTasksOfEpic = new ArrayList<>();
 
     public EpicTask(String taskTitle, String taskDescription) {
         super(taskTitle, taskDescription);
+    }
+
+    public ArrayList<Integer> getSubTasksOfEpic() {
+        return subTasksOfEpic;
+    }
+
+    public void setSubTasksOfEpic(ArrayList<Integer> subTasksOfEpic) {
+        this.subTasksOfEpic = subTasksOfEpic;
     }
 
     @Override
@@ -16,7 +24,7 @@ public class EpicTask extends Task {
                 ", Наименование задачи: " + getTaskTitle() + '\'' +
                 ", Описание задачи: " + getTaskDescription() + '\'' +
                 ", Статус задачи: " + getTaskStatus() +
-                ", ID прикрепленных подзадач: " + subTasksOfEpic +
+                ", ID прикрепленных подзадач: " + getSubTasksOfEpic() +
                 '\n';
 
     }

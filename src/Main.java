@@ -10,9 +10,7 @@ public class Main {
     }
 
     static void testProject() {
-        TaskManager manager = Managers.getDefault();
-        InMemoryTaskManager inMemoryTaskManager = (InMemoryTaskManager) manager;
-
+        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
 
         Task task = new Task("Задача", "Описание");
         EpicTask epic = new EpicTask("Эпик", "Описание");
@@ -23,6 +21,7 @@ public class Main {
         Subtask subtask4 = new Subtask("Подзадача4", "Описание", 2);
         Subtask subtask5 = new Subtask("Подзадача5", "Описание", 3);
         Subtask subtask6 = new Subtask("Подзадача6", "Описание", 3);
+        Subtask subtask7 = new Subtask("Подзадача7", "Описание", 3);
 
         inMemoryTaskManager.createTask(task);
         inMemoryTaskManager.createEpic(epic);
@@ -48,17 +47,25 @@ public class Main {
         subtask6.setTaskDescription("Новое описание");
         subtask6.setTaskStatus(Status.DONE);
         inMemoryTaskManager.updateSubTask(subtask6);
-        System.out.println("\nЭпик 2: \n" + inMemoryTaskManager.epicTasksHashMap.get(3));
-        System.out.println("\nПодзадачи эпика 2:\n" + inMemoryTaskManager.getSubTasksOfEpic(3) + "\n\n");
+        //inMemoryTaskManager.createSubTask(subtask7);        // при создании подзадачи, статус эпика будет IN_PROGRESS
+        System.out.println("\nЭпик 2: \n" + epic2);
+        System.out.println("\nПодзадачи эпика 2:\n"
+                + inMemoryTaskManager.getSubTasksOfEpic(subtask5.getEpicId()) + "\n\n");
 
+        // Проверка удаления
+        // Если удалить подз. с ст. DONE, и оставить подзадачу с ст. NEW (50 строка), то статус эпика изменится на NEW
         /*inMemoryTaskManager.removeTask(7);
-        inMemoryTaskManager.removeTask(8);
-        inMemoryTaskManager.printAllTasks();
+        //inMemoryTaskManager.removeTask(8);
+        //System.out.println("\nЭпик 2: \n" + epic2);
+        //System.out.println("\nПодзадачи эпика 2:\n"
+                + inMemoryTaskManager.getSubTasksOfEpic(subtask5.getEpicId()) + "\n\n"); */
 
-        inMemoryTaskManager.removeTask(2);
-        inMemoryTaskManager.printAllTasks();*/
+        // Удаление эпика и его подзадач
+        //inMemoryTaskManager.removeTask(2);
+        //inMemoryTaskManager.printAllTasks();
 
-        System.out.println("Проверка истории:");
+        // Проверка истории
+        /*System.out.println("Проверка истории:");
         inMemoryTaskManager.getTask(1);                     // <--- не войдет в список
         inMemoryTaskManager.getTask(2);
         inMemoryTaskManager.getTask(2);
@@ -70,8 +77,10 @@ public class Main {
         inMemoryTaskManager.getTask(2);
         inMemoryTaskManager.getTask(5);
         inMemoryTaskManager.getTask(5);
+        System.out.println(inMemoryTaskManager.getHistory());*/
 
-        System.out.println(InMemoryHistoryManager.inMemoryHistoryManagerStatic.getHistory());
-
+        // Проверка статуса эпиков, если удалить их подзадачи
+        //inMemoryTaskManager.removeAllSubTasks();
+        //inMemoryTaskManager.printAllTasks();
     }
 }

@@ -3,15 +3,16 @@ package service;
 import model.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
     private final static int MAX_HISTORY_LIST = 10;
-    public static InMemoryHistoryManager inMemoryHistoryManagerStatic = new InMemoryHistoryManager();
-    private final ArrayList<Task> historyArrList = new ArrayList<>();
+    private final List<Task> historyArrList = new ArrayList<>();
 
     @Override
-    public ArrayList<Task> getHistory() {
-        return historyArrList;
+    public List<Task> getHistory() {
+        List<Task> copiedList = List.copyOf(historyArrList);
+        return copiedList;
     }
 
     @Override

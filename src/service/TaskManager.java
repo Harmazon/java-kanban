@@ -5,44 +5,43 @@ import model.Subtask;
 import model.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface TaskManager {
 
-    public void createTask(Task task);
+    Task createTask(Task task);
 
+    EpicTask createEpic(EpicTask epicTask);
 
-    public void createEpic(EpicTask epicTask);
+    Subtask createSubTask(Subtask subtask);
 
+    Task getTask(int id);
 
-    public void createSubTask(Subtask subtask);
+    void printAllTasks();
 
+    ArrayList<Task> getAllSimpleTasks();
 
-    public Task getTask(int id);
+    ArrayList<EpicTask> getAllEpics();
 
+    ArrayList<Subtask> getAllSubTasks();
 
-    public void printAllTasks();
+    ArrayList<Subtask> getSubTasksOfEpic(int id);
 
+    void removeTask(int id);
+    void removeEpic(int id);
+    void removeSubTask(int id);
 
-    public ArrayList<Task> getAllSimpleTasks();
+    void removeAllTasks();
 
+    void removeAllEpics();
 
-    public ArrayList<EpicTask> getAllEpics();
+    void removeAllSubTasks();
 
+    void updateTask(Task task);
 
-    public ArrayList<Subtask> getAllSubTasks();
+    void updateEpicTask(EpicTask epicTask);
 
+    void updateSubTask(Subtask subtask);
 
-    public ArrayList<Subtask> getSubTasksOfEpic(int id);
-
-
-    public void removeTask(int id);
-
-    public void removeAllTasks();
-
-    public void updateTask(Task task);
-
-    public void updateEpicTask(EpicTask epicTask);
-
-    public void updateSubTask(Subtask subtask);
-
+    List<Task> getHistory();
 }

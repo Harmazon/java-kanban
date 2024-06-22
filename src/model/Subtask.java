@@ -1,10 +1,18 @@
 package model;
 
 public class Subtask extends Task {
-    public int epicId;
+    private int epicId;
 
     public Subtask(String taskTitle, String taskDescription, int epicId) {
         super(taskTitle, taskDescription);
+        this.epicId = epicId;
+    }
+
+    public int getEpicId() {
+        return epicId;
+    }
+
+    public void setEpicId(int epicId) {
         this.epicId = epicId;
     }
 
@@ -15,7 +23,7 @@ public class Subtask extends Task {
                 ", Наименование подзадачи: " + getTaskTitle() + '\'' +
                 ", Описание подзадачи: " + getTaskDescription() + '\'' +
                 ", Статус подзадачи: " + getTaskStatus() +
-                ", ID папы-эпика " + epicId +
+                ", ID папы-эпика " + getEpicId() +
                 '\n';
     }
 }
