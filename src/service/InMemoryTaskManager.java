@@ -17,14 +17,14 @@ public class InMemoryTaskManager implements TaskManager {
     protected HashMap<Integer, Task> tasksHashMap = new HashMap<>();
     protected HashMap<Integer, EpicTask> epicTasksHashMap = new HashMap<>();
     protected HashMap<Integer, Subtask> subTasksHashMap = new HashMap<>();
-    InMemoryHistoryManager IMHManager = new InMemoryHistoryManager();
+    private final InMemoryHistoryManager IMHManager = new InMemoryHistoryManager();
 
     @Override
     public Task createTask(Task task) {                                         // создание и return простой задачи
         task.setTaskId(newId);
         newId++;
         tasksHashMap.put(task.getTaskId(), task);
-        return tasksHashMap.get(task.getTaskId());
+        return task;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class InMemoryTaskManager implements TaskManager {
         epicTask.setTaskId(newId);
         newId++;
         epicTasksHashMap.put(epicTask.getTaskId(), epicTask);
-        return epicTasksHashMap.get(epicTask.getTaskId());
+        return epicTask;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class InMemoryTaskManager implements TaskManager {
             epicTasksHashMap.get(subtask.getEpicId()).setSubTasksOfEpic(arrayList);
             newId++;
             checkAndChangeStatus(epicTasksHashMap.get(subtask.getEpicId()));
-            return subTasksHashMap.get(subtask.getTaskId());
+            return subtask;
         } else {
             subTasksHashMap.remove(subtask.getTaskId());
             return null;
@@ -82,29 +82,17 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public ArrayList<Task> getAllSimpleTasks() {
-        if (!(tasksHashMap.isEmpty())) {
-            return new ArrayList<>(tasksHashMap.values());
-        } else {
-            return null;
-        }
+        return new ArrayList<>(tasksHashMap.values());
     }
 
     @Override
     public ArrayList<EpicTask> getAllEpics() {
-        if (!(tasksHashMap.isEmpty())) {
-            return new ArrayList<>(epicTasksHashMap.values());
-        } else {
-            return null;
-        }
+        return new ArrayList<>(epicTasksHashMap.values());
     }
 
     @Override
     public ArrayList<Subtask> getAllSubTasks() {
-        if (!(tasksHashMap.isEmpty())) {
-            return new ArrayList<>(subTasksHashMap.values());
-        } else {
-            return null;
-        }
+        return new ArrayList<>(subTasksHashMap.values());
     }
 
     @Override
@@ -183,7 +171,7 @@ public class InMemoryTaskManager implements TaskManager {
         return IMHManager.getHistory();
     }
 
-    protected void checkAndChangeStatus(EpicTask epicTask) {
+    public void checkAndChangeStatus(EpicTask epicTask) {
         if (epicTask.getSubTasksOfEpic().isEmpty()) {
             epicTask.setTaskStatus(Status.NEW);
         } else {

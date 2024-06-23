@@ -11,12 +11,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class InMemoryTaskManagerTest {
-    InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
+    private final InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
     private static Task task1 = new Task("ЗадачаТест1", "Описание1");
     private static Task task2 = new Task("ЗадачаТест2", "Описание2");
     private static EpicTask epic1 = new EpicTask("Эпик1", "Описание1");
     private static EpicTask epic2 = new EpicTask("Эпик2", "Описание2");
-    private static EpicTask epic3= new EpicTask("Эпик3", "Описание3");
+    private static EpicTask epic3 = new EpicTask("Эпик3", "Описание3");
 
     @BeforeEach
     void setUp() {
@@ -34,7 +34,7 @@ class InMemoryTaskManagerTest {
         assertEquals(2, task2.getTaskId());
 
         // Проверяем, что задачи не равны
-        assertFalse(task1 == task2);
+        assertNotSame(task1, task2);
     }
 
     @Test
@@ -44,8 +44,7 @@ class InMemoryTaskManagerTest {
         assertEquals(4, epic2.getTaskId());
 
         // Проверяем, что задачи не равны
-        assertFalse(epic1 == epic2);
-
+        assertNotSame(epic1, epic2);
     }
 
     @Test
@@ -61,10 +60,10 @@ class InMemoryTaskManagerTest {
         assertEquals(7, subtask2.getTaskId());
 
         // проверим корректное помещение подзадачи в соответствующую коллекцию эпика
-        assertTrue(epic1.getTaskId() == subtask1.getEpicId(), "id совпадают");
+        assertEquals(epic1.getTaskId(), subtask1.getEpicId(), "id совпадают");
 
         // проверим, что подзадача находится в коллекции
-        assertTrue(epic1.getSubTasksOfEpic().get(0) == subtask1.getTaskId(), "id подзадачи в листе");
+        assertEquals(epic1.getSubTasksOfEpic().get(0), subtask1.getTaskId(), "id подзадачи в листе");
     }
 
     @Test
@@ -200,5 +199,6 @@ class InMemoryTaskManagerTest {
         inMemoryTaskManager.removeSubTask(idSub2);
         inMemoryTaskManager.checkAndChangeStatus(epic3);
         assertTrue(epic3.getTaskStatus().equals(Status.NEW), "NEW");
+        assertEquals(0, epic3.getSubTasksOfEpic().size(), "коллекция Id подзадач пуста");
     }
 }

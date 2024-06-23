@@ -11,8 +11,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public List<Task> getHistory() {
-        List<Task> copiedList = List.copyOf(historyArrList);
-        return copiedList;
+        return List.copyOf(historyArrList);
     }
 
     @Override

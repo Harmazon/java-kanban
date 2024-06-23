@@ -3,9 +3,6 @@ package service;
 import model.Task;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest {
@@ -22,6 +19,10 @@ class InMemoryHistoryManagerTest {
 
         assertEquals(2, historyManager.getHistory().size(), "История не пустая.");
 
+        historyManager.add(task1);
+        historyManager.add(task2);
+        historyManager.add(task1);
+        historyManager.add(task2);
         historyManager.add(task1);
         historyManager.add(task2);
         historyManager.add(task1);
