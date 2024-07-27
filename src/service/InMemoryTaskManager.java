@@ -42,7 +42,7 @@ public class InMemoryTaskManager implements TaskManager {
             ArrayList arrayList = new ArrayList(epicTasksHashMap.get(subtask.getEpicId()).getSubTasksOfEpic());
             epicTasksHashMap.get(subtask.getEpicId()).getSubTasksOfEpic().clear();
             arrayList.add(subtask.getTaskId());
-            epicTasksHashMap.get(subtask.getEpicId()).setSubTasksOfEpic(arrayList);     //***зачем чистить и перезаписывать?
+            epicTasksHashMap.get(subtask.getEpicId()).setSubTasksOfEpic(arrayList);
             newId++;
             checkAndChangeStatus(epicTasksHashMap.get(subtask.getEpicId()));
             return subtask;
