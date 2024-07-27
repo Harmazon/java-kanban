@@ -147,8 +147,7 @@ public class InMemoryTaskManager implements TaskManager {
         for (int key : epicTasksHashMap.get(id).getSubTasksOfEpic()) {      // удаляются подзадачи эпика
             subTasksHashMap.remove(key);
         }
-        //epicTasksHashMap.get(id).getSubTasksOfEpic().clear();               // удаляются подзадачи эпика из листа
-        epicTasksHashMap.remove(id);                                        // удаляется эпик по id
+        epicTasksHashMap.remove(id);    git                                     // удаляется эпик по id
     }
 
     @Override
