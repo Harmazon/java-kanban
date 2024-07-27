@@ -1,11 +1,9 @@
 package service;
 
 import model.Task;
-import model.CustomList;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.HashMap;
 
 public class InMemoryHistoryManager implements HistoryManager {
     private final static int MAX_HISTORY_LIST = 10;
