@@ -1,9 +1,6 @@
 package service;
 
-import model.EpicTask;
-import model.Status;
-import model.Subtask;
-import model.Task;
+import model.*;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -14,10 +11,12 @@ public class InMemoryTaskManager implements TaskManager {
     private int newCount = 0;
     private int doneCount = 0;
     private int inProgressCount = 0;
-    protected HashMap<Integer, Task> tasksHashMap = new HashMap<>();
-    protected HashMap<Integer, EpicTask> epicTasksHashMap = new HashMap<>();
-    protected HashMap<Integer, Subtask> subTasksHashMap = new HashMap<>();
+    protected final HashMap<Integer, Task> tasksHashMap = new HashMap<>();
+    protected final HashMap<Integer, EpicTask> epicTasksHashMap = new HashMap<>();
+    protected final HashMap<Integer, Subtask> subTasksHashMap = new HashMap<>();
     private final InMemoryHistoryManager IMHManager = new InMemoryHistoryManager();
+    private final CustomList customList = new CustomList();
+    List <Integer> listVault = new ArrayList<>();
 
     @Override
     public Task createTask(Task task) {                                         // создание и return простой задачи
@@ -43,7 +42,7 @@ public class InMemoryTaskManager implements TaskManager {
             ArrayList arrayList = new ArrayList(epicTasksHashMap.get(subtask.getEpicId()).getSubTasksOfEpic());
             epicTasksHashMap.get(subtask.getEpicId()).getSubTasksOfEpic().clear();
             arrayList.add(subtask.getTaskId());
-            epicTasksHashMap.get(subtask.getEpicId()).setSubTasksOfEpic(arrayList);
+            epicTasksHashMap.get(subtask.getEpicId()).setSubTasksOfEpic(arrayList);     //***зачем чистить и перезаписывать?
             newId++;
             checkAndChangeStatus(epicTasksHashMap.get(subtask.getEpicId()));
             return subtask;
@@ -57,17 +56,51 @@ public class InMemoryTaskManager implements TaskManager {
     public Task getTask(int id) {                               // вывести в консоль задачу, эпик или подзадачу
         if (tasksHashMap.containsKey(id)) {
             IMHManager.add(tasksHashMap.get(id));
+
+            if (!(listVault.contains(id))) {
+                listVault.add(id);
+                customList.add(tasksHashMap.get(id));
+            }
+            else {
+                customList.remove(tasksHashMap.get(id));
+                customList.add(tasksHashMap.get(id));
+            }
+
             return tasksHashMap.get(id);                        // return задача
         } else if (epicTasksHashMap.containsKey(id)) {
             IMHManager.add(epicTasksHashMap.get(id));
+
+            if (!(listVault.contains(id))) {
+                listVault.add(id);
+                customList.add(epicTasksHashMap.get(id));
+            }
+            else {
+                customList.remove(epicTasksHashMap.get(id));
+                customList.add(epicTasksHashMap.get(id));
+            }
+
             return epicTasksHashMap.get(id);                    // return эпик
         } else if (subTasksHashMap.containsKey(id)) {
             IMHManager.add(subTasksHashMap.get(id));
+
+            if (!(listVault.contains(id))) {
+                listVault.add(id);
+                customList.add(subTasksHashMap.get(id));
+            }
+            else {
+                customList.remove(subTasksHashMap.get(id));
+                customList.add(subTasksHashMap.get(id));
+            }
+
             return subTasksHashMap.get(id);                     // return подзадача
         } else {
             System.out.println("Такого id нет");
             return null;
         }
+    }
+
+    public void showCustomList() {
+        customList.print();
     }
 
     @Override
@@ -114,7 +147,7 @@ public class InMemoryTaskManager implements TaskManager {
         for (int key : epicTasksHashMap.get(id).getSubTasksOfEpic()) {      // удаляются подзадачи эпика
             subTasksHashMap.remove(key);
         }
-        epicTasksHashMap.get(id).getSubTasksOfEpic().clear();               // удаляются подзадачи эпика из листа
+        //epicTasksHashMap.get(id).getSubTasksOfEpic().clear();               // удаляются подзадачи эпика из листа
         epicTasksHashMap.remove(id);                                        // удаляется эпик по id
     }
 
@@ -171,7 +204,7 @@ public class InMemoryTaskManager implements TaskManager {
         return IMHManager.getHistory();
     }
 
-    public void checkAndChangeStatus(EpicTask epicTask) {
+    protected void checkAndChangeStatus(EpicTask epicTask) {
         if (epicTask.getSubTasksOfEpic().isEmpty()) {
             epicTask.setTaskStatus(Status.NEW);
         } else {

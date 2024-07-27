@@ -12,14 +12,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class InMemoryTaskManagerTest {
     private final InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
-    private static Task task1 = new Task("ЗадачаТест1", "Описание1");
-    private static Task task2 = new Task("ЗадачаТест2", "Описание2");
-    private static EpicTask epic1 = new EpicTask("Эпик1", "Описание1");
-    private static EpicTask epic2 = new EpicTask("Эпик2", "Описание2");
-    private static EpicTask epic3 = new EpicTask("Эпик3", "Описание3");
+    private static Task task1;
+    private static Task task2;
+    private static EpicTask epic1;
+    private static EpicTask epic2;
+    private static EpicTask epic3;
 
     @BeforeEach
     void setUp() {
+        task1 = new Task("ЗадачаТест1", "Описание1");
+        task2 = new Task("ЗадачаТест2", "Описание2");
+        epic1 = new EpicTask("Эпик1", "Описание1");
+        epic2 = new EpicTask("Эпик2", "Описание2");
+        epic3 = new EpicTask("Эпик3", "Описание3");
+
         inMemoryTaskManager.createTask(task1);
         inMemoryTaskManager.createTask(task2);
         inMemoryTaskManager.createEpic(epic1);
@@ -74,16 +80,15 @@ class InMemoryTaskManagerTest {
         inMemoryTaskManager.createSubTask(subtask1);
         inMemoryTaskManager.createSubTask(subtask2);
 
-        // проверим наличие задачи в хэш-мапе после применения метода
-        int idTask = task1.getTaskId();
-        inMemoryTaskManager.removeTask(idTask);
-        assertFalse(inMemoryTaskManager.tasksHashMap.containsKey(idTask), "задача удалена");
-
-        // подготовка: перед удалением убедимся что коллекция id и хэш-мапа подзадач заполнены
         int idEpic = epic1.getTaskId();
         int idSub1 = subtask1.getTaskId();
         int idSub2 = subtask2.getTaskId();
 
+        // проверим наличие задачи в хэш-мапе после применения метода
+        inMemoryTaskManager.removeTask(task1.getTaskId());
+        assertFalse(inMemoryTaskManager.tasksHashMap.containsKey(task1.getTaskId()), "задача удалена");
+
+        // подготовка: перед удалением убедимся что коллекция id и хэш-мапа подзадач заполнены
         assertTrue(epic1.getSubTasksOfEpic().contains(idSub1), "в листе содержится этот id");
         assertTrue(epic1.getSubTasksOfEpic().contains(idSub2), "в листе содержится этот id");
         assertTrue(inMemoryTaskManager.subTasksHashMap.containsKey(idSub1), "мапа содержит эту подзадачу");
@@ -180,6 +185,9 @@ class InMemoryTaskManagerTest {
         assertTrue(subtask3.getTaskStatus().equals(Status.NEW), "NEW");
         assertTrue(epic3.getTaskStatus().equals(Status.IN_PROGRESS), "IN_PROGRESS");
 
+        // перед удалениями убедимся, что коллекция Id заполнена
+        assertEquals(3, epic3.getSubTasksOfEpic().size(), "коллекция Id подзадач заполнена");
+
         // эпик IN_PROGRESS, subtask1 DELETE, subtask2 DONE, subtask3 NEW
         inMemoryTaskManager.removeSubTask(idSub1);
         inMemoryTaskManager.checkAndChangeStatus(epic3);
@@ -199,6 +207,7 @@ class InMemoryTaskManagerTest {
         inMemoryTaskManager.removeSubTask(idSub2);
         inMemoryTaskManager.checkAndChangeStatus(epic3);
         assertTrue(epic3.getTaskStatus().equals(Status.NEW), "NEW");
+
         assertEquals(0, epic3.getSubTasksOfEpic().size(), "коллекция Id подзадач пуста");
     }
 }
