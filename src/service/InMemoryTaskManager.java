@@ -14,9 +14,9 @@ public class InMemoryTaskManager implements TaskManager {
     protected final HashMap<Integer, Task> tasksHashMap = new HashMap<>();
     protected final HashMap<Integer, EpicTask> epicTasksHashMap = new HashMap<>();
     protected final HashMap<Integer, Subtask> subTasksHashMap = new HashMap<>();
-    private final InMemoryHistoryManager IMHManager = new InMemoryHistoryManager();
+    private final InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
     private final CustomList customList = new CustomList();
-    List <Integer> listVault = new ArrayList<>();
+    List<Integer> listVault = new ArrayList<>();
 
     @Override
     public Task createTask(Task task) {                                         // создание и return простой задачи
@@ -55,39 +55,36 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Task getTask(int id) {                               // вывести в консоль задачу, эпик или подзадачу
         if (tasksHashMap.containsKey(id)) {
-            IMHManager.add(tasksHashMap.get(id));
+            inMemoryHistoryManager.add(tasksHashMap.get(id));
 
             if (!(listVault.contains(id))) {
                 listVault.add(id);
                 customList.add(tasksHashMap.get(id));
-            }
-            else {
+            } else {
                 customList.remove(tasksHashMap.get(id));
                 customList.add(tasksHashMap.get(id));
             }
 
             return tasksHashMap.get(id);                        // return задача
         } else if (epicTasksHashMap.containsKey(id)) {
-            IMHManager.add(epicTasksHashMap.get(id));
+            inMemoryHistoryManager.add(epicTasksHashMap.get(id));
 
             if (!(listVault.contains(id))) {
                 listVault.add(id);
                 customList.add(epicTasksHashMap.get(id));
-            }
-            else {
+            } else {
                 customList.remove(epicTasksHashMap.get(id));
                 customList.add(epicTasksHashMap.get(id));
             }
 
             return epicTasksHashMap.get(id);                    // return эпик
         } else if (subTasksHashMap.containsKey(id)) {
-            IMHManager.add(subTasksHashMap.get(id));
+            inMemoryHistoryManager.add(subTasksHashMap.get(id));
 
             if (!(listVault.contains(id))) {
                 listVault.add(id);
                 customList.add(subTasksHashMap.get(id));
-            }
-            else {
+            } else {
                 customList.remove(subTasksHashMap.get(id));
                 customList.add(subTasksHashMap.get(id));
             }
@@ -200,7 +197,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Task> getHistory() {
-        return IMHManager.getHistory();
+        return inMemoryHistoryManager.getHistory();
     }
 
     protected void checkAndChangeStatus(EpicTask epicTask) {
