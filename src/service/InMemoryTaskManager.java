@@ -89,7 +89,7 @@ public class InMemoryTaskManager implements TaskManager {
                 customList.add(subTasksHashMap.get(id));
             }
 
-            return subTasksHashMap.get(id);                     
+            return subTasksHashMap.get(id);
         } else {
             System.out.println("Такого id нет");
             return null;
