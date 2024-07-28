@@ -65,7 +65,7 @@ public class InMemoryTaskManager implements TaskManager {
                 customList.add(tasksHashMap.get(id));
             }
 
-            return tasksHashMap.get(id);                        // return задача
+            return tasksHashMap.get(id);
         } else if (epicTasksHashMap.containsKey(id)) {
             inMemoryHistoryManager.add(epicTasksHashMap.get(id));
 
@@ -77,7 +77,7 @@ public class InMemoryTaskManager implements TaskManager {
                 customList.add(epicTasksHashMap.get(id));
             }
 
-            return epicTasksHashMap.get(id);                    // return эпик
+            return epicTasksHashMap.get(id);
         } else if (subTasksHashMap.containsKey(id)) {
             inMemoryHistoryManager.add(subTasksHashMap.get(id));
 
@@ -89,7 +89,7 @@ public class InMemoryTaskManager implements TaskManager {
                 customList.add(subTasksHashMap.get(id));
             }
 
-            return subTasksHashMap.get(id);                     // return подзадача
+            return subTasksHashMap.get(id);                     
         } else {
             System.out.println("Такого id нет");
             return null;
